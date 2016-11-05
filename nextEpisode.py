@@ -17,11 +17,13 @@ url = "http://next-episode.net/" + tvShow
 request = urllib2.Request(url)
 response = urllib2.urlopen(request)
 page = response.read()
-
 soup = bs(page, 'html.parser')
+
 previousEpisode = soup.find('div', {'id': 'previous_episode'})
+
 nextEpisode = soup.find('div', {'id': 'next_episode'})
 
-print previousEpisode
+
+print previousEpisode.text.strip()
 print
-print nextEpisode
+print nextEpisode.text.strip()
