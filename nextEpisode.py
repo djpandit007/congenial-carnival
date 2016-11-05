@@ -19,11 +19,15 @@ response = urllib2.urlopen(request)
 page = response.read()
 soup = bs(page, 'html.parser')
 
-previousEpisode = soup.find('div', {'id': 'previous_episode'})
+previousEpisode = soup.find('div', {'id': 'previous_episode'}).text
+previousEpisode = previousEpisode.replace('Summary:Episode Summary', '')\
+                  .replace('\t', '').replace('\n\n', '\n')
 
-nextEpisode = soup.find('div', {'id': 'next_episode'})
+nextEpisode = soup.find('div', {'id': 'next_episode'}).text
+nextEpisode = nextEpisode.replace('Summary:Episode Summary', '')\
+              .replace('\t', '').replace('\n\n', '\n')
+nextEpisode = str(nextEpisode)
 
 
-print previousEpisode.text.strip()
-print
-print nextEpisode.text.strip()
+print previousEpisode
+print nextEpisode
