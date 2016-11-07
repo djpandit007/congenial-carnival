@@ -10,18 +10,22 @@ request = urllib2.Request(calendarURL)
 response = urllib2.urlopen(request)
 page = response.read()
 calendarSoup = bs(page, 'html.parser')
+##print calendarSoup.text
 
 request = urllib2.Request(raceURL)
 response = urllib2.urlopen(request)
 page = response.read()
 raceSoup = bs(page, 'html.parser')
+##print raceSoup.text
 
 request = urllib2.Request(driversURL)
 response = urllib2.urlopen(request)
 page = response.read()
 driverSoup = bs(page, 'html.parser')
+##print driverSoup.text
 
 request = urllib2.Request(constructorsURL)
 response = urllib2.urlopen(request)
 page = response.read()
 constructorSoup = bs(page, 'html.parser')
+##print constructorSoup.text
