@@ -21,35 +21,36 @@ def getCredentials():
     except IOError:
         print "The file with API key not found!"
 
+def isError(responseObj):
+    # Returns True if there is an error, False otherwise
+    if responseObj.ok and responseObj.status_code == 200:
+        return False
+    elif responseObj.status_code == 401:
+        print "Authentication failure. The program will now quit"
+        return True
+    else:
+        print "There has been an unexpected error. The program will now quit"
+        return True
+
 def authenticate():
     # Authenticates credentials are returns JWT token as unicode
     data = getCredentials()
     response = requests.post(APIURL + "/login", json=data)
-    if response.status_code == 401:
-        print "Authentication failure. The program will now quit"
+    if isError(response):
         sys.exit()
-    elif response.ok and response.status_code == 200:
+    else:
         token = json.loads(response.content)["token"]
         print "JWT Token Generated successfully"
-    else:
-        print "There has been an unexpected error. The program will now quit"
-        sys.exit()
     return token
 
-def getUserFavorites():
+def getMyFavorites():
+    # Returns the IDs of my favorite series
     token = authenticate()
     authorization = {"Authorization" : "Bearer " + token}
     userFav = requests.get(APIURL + "/user/favorites", headers=authorization)
-    if userFav.status_code == 401:
-        print "Authentication failure. The program will now quit"
+    if isError(userFav):
         sys.exit()
-    elif userFav.ok and userFav.status_code == 200:
-        favorites = json.loads(userFav.content)["data"]["favorites"]
-        print "Fetched user favorites successfully"
     else:
-        print "There has been an unexpected error. The program will now quit"
-        sys.exit()
-
-
-
-getUserFavorites()
+        favorites = json.loads(userFav.content)["data"]["favorites"]
+        print "Fetched my favorite series successfully"
+    return favorites
