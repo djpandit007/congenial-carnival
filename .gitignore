@@ -89,4 +89,4 @@ ENV/
 .ropeproject
 
 # API Key Files
-API Key.txt
+credentials.txt
