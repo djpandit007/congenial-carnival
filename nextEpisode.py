@@ -1,5 +1,6 @@
 from urllib2 import *
 from bs4 import BeautifulSoup as bs
+import re
 
 def tvShowURL(tvShow):
     """
@@ -23,15 +24,31 @@ def previousNext(tvShowFormatted):
         page = response.read()
         soup = bs(page, 'html.parser')
 
-        previousEpisode = soup.find('div', {'id': 'previous_episode'}).text
-        previousEpisode = previousEpisode.replace('Summary:Episode Summary', '')\
+        previousEp = soup.find('div', {'id': 'previous_episode'}).text
+        previousEp = previousEp.replace('Summary:Episode Summary', '')\
                           .replace('\t', '').replace('\n\n', '\n')
-        previousEpisode = previousEpisode.strip()
+        previousEp = previousEp.strip()
+        name = re.findall(r'Name:(.*?)\nDate', previousEp)
+        date = re.findall(r'Date:(.*?)\nSeason', previousEp)
+        seasonNum = re.findall(r'Season:(.*?)\nEpisode', previousEp)
+        episodeNum = re.findall(r'Episode:(.*?)$', previousEp)
+        previousEpisode = {"episodeName": name, "airDate": date,
+                           "season": seasonNum, "episode": episodeNum}
 
-        nextEpisode = soup.find('div', {'id': 'next_episode'}).text
-        nextEpisode = nextEpisode.replace('Summary:Episode Summary', '')\
+        nextEp = soup.find('div', {'id': 'next_episode'}).text
+        nextEp = nextEp.replace('Summary:Episode Summary', '')\
                       .replace('\t', '').replace('\n\n', '\n')
-        nextEpisode = nextEpisode.strip()
+        nextEp = nextEp.strip()
+        name = re.findall(r'Name:(.*?)\nCountdown', nextEp)
+        countdown = re.findall(r'Countdown:(.*?)\nDate', nextEp)
+        date = re.findall(r'Date:(.*?)\nSeason', nextEp)
+        seasonNum = re.findall(r'Season:(.*?)\nEpisode', nextEp)
+        episodeNum = re.findall(r'Episode:(.*?)$', nextEp)
+        misc = ''
+        if name == date == countdown == seasonNum == episodeNum == []:
+            misc = nextEp
+        nextEpisode = {"episodeName": name, "airDate": date, "countDown": countdown,
+                       "season": seasonNum, "episode": episodeNum, "misc": misc}
 
         return {"previousEpisode": previousEpisode, "nextEpisode": nextEpisode}
 
