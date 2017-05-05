@@ -29,10 +29,10 @@ try:
     nextEpisode = nextEpisode.replace('Summary:Episode Summary', '')\
                   .replace('\t', '').replace('\n\n', '\n')
     nextEpisode = nextEpisode.strip()
-    
+
     print previousEpisode
     print
     print nextEpisode
-    
+
 except HTTPError:
-    print "Sorry, we could not find a TV series you were looking for! :("
+    print "Sorry, we could not find the TV series you were looking for! :("
