@@ -11,9 +11,9 @@ def tvShowURL(tvShow):
     return tvShow
 
 tvShow = raw_input("Enter TV show name: ")
-tvShow = tvShowURL(tvShow)
+tvShowFormatted = tvShowURL(tvShow)
 
-url = "http://next-episode.net/" + tvShow
+url = "http://next-episode.net/" + tvShowFormatted
 try:
     request = Request(url)
     response = urlopen(request)
