@@ -1,6 +1,5 @@
 import requests
 import json
-import sys
 from pprint import pprint
 
 APIURL = "https://api.thetvdb.com"
@@ -26,38 +25,49 @@ def isError(responseObj):
     if responseObj.ok and responseObj.status_code == 200:
         return False
     elif responseObj.status_code == 401:
-        print "Authentication failure. The program will now quit"
+        print "Authentication failure"
         return True
     else:
-        print "There has been an unexpected error. The program will now quit"
+        print "There has been an unexpected error"
         return True
 
 def authenticate():
-    # Authenticates credentials are returns JWT token as unicode
+    """
+    Authenticates credentials are returns JWT token as unicode
+    Returns None if there is an error
+    """
     data = getCredentials()
     response = requests.post(APIURL + "/login", json=data)
     if isError(response):
-        sys.exit()
+        return None
     else:
         token = json.loads(response.content)["token"]
         print "JWT Token Generated successfully"
     return token
 
 def getMyFavorites():
-    # Returns the IDs of my favorite series
+    """
+    Returns the IDs of my favorite series
+    Returns None if error
+    """
     token = authenticate()
     authorization = {"Authorization" : "Bearer " + token}
     userFav = requests.get(APIURL + "/user/favorites", headers=authorization)
     if isError(userFav):
-        sys.exit()
+        return None
     else:
         favorites = json.loads(userFav.content)["data"]["favorites"]
         print "Fetched my favorite series successfully"
     return favorites
 
 def seriesInfo(seriesName):
-    # Returns response object for 'seriesName'
+    """
+    Returns response object for 'seriesName'
+    Returns None if error
+    """
     token = authenticate()
     authorization = {"Authorization": "Bearer " + token}
     series = requests.get(APIURL + "/search/series", headers=authorization, params={"name": seriesName})
+    if isError(series):
+        return None
     return series
