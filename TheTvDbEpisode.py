@@ -54,3 +54,10 @@ def getMyFavorites():
         favorites = json.loads(userFav.content)["data"]["favorites"]
         print "Fetched my favorite series successfully"
     return favorites
+
+def seriesInfo(seriesName):
+    # Returns response object for 'seriesName'
+    token = authenticate()
+    authorization = {"Authorization": "Bearer " + token}
+    series = requests.get(APIURL + "/search/series", headers=authorization, params={"name": seriesName})
+    return series
