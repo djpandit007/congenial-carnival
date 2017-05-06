@@ -69,3 +69,15 @@ def seriesInfo(seriesName):
     if isError(series):
         return None
     return series
+
+def getEpisodeOverview(seriesId, seasonNum, episodeNum):
+    """
+    Returns the overview of a particular episode of a season
+    Returns None if error
+    """
+    token = authenticate()
+    authorization = {"Authorization" : "Bearer " + token}
+    episodeOverview = requests.get(APIURL + "/series/" + str(seriesId) + "/episodes/query", headers=authorization, params={"id": seriesId, "airedSeason": seasonNum, "airedEpisode" :episodeNum})
+    if isError(episodeOverview):
+        return None
+    return json.loads(episodeOverview.content)["data"][0]["overview"]
