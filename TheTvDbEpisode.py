@@ -15,7 +15,6 @@ def getCredentials():
         userKey = credentials.readline().strip()
         assert len(userKey) == 16, "Invalid user key"
         credentials.close()
-        print "Fetched API Key"
         return {"apikey": apiKey, "username": userName, "userkey": userKey}
     except IOError:
         print "The file with API key not found!"
@@ -42,7 +41,6 @@ def authenticate():
         return None
     else:
         token = json.loads(response.content)["token"]
-        print "JWT Token Generated successfully"
     return token
 
 def getMyFavorites():
