@@ -30,7 +30,7 @@ def previousNext(tvShowFormatted):
     date = re.findall(r'Date:(.*?)\nSeason', previousEp)
     seasonNum = re.findall(r'Season:(.*?)\nEpisode', previousEp)
     episodeNum = re.findall(r'Episode:(.*?)$', previousEp)
-    previousEpisode = {"episodeName": name, "airDate": date, "season": seasonNum, "episode": episodeNum}
+    previousEpisode = {"episodeName": name, "airDate": date, "season": seasonNum, "episode": episodeNum, "text": previousEp}
 
     nextEp = soup.find('div', {'id': 'next_episode'}).text
     nextEp = nextEp.replace('Summary:Episode Summary', '').replace('\t', '').replace('\n\n', '\n')
@@ -43,6 +43,6 @@ def previousNext(tvShowFormatted):
     misc = ''
     if name == date == countdown == seasonNum == episodeNum == []:
         misc = nextEp
-        nextEpisode = {"episodeName": name, "airDate": date, "countDown": countdown, "season": seasonNum, "episode": episodeNum, "misc": misc}
+    nextEpisode = {"episodeName": name, "airDate": date, "countDown": countdown, "season": seasonNum, "episode": episodeNum, "misc": misc, "text": nextEp}
 
     return {"previousEpisode": previousEpisode, "nextEpisode": nextEpisode}
