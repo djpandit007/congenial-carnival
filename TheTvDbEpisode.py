@@ -26,7 +26,6 @@ def getContactDetails():
         contact = open("contact.txt", "r")
         mobilePhone = contact.readline().strip()
         assert len(mobilePhone) == 12, "Invalid API Key"
-        print mobilePhone
         return mobilePhone
     except IOError:
         print "The file with contact details not found!"
@@ -114,8 +113,3 @@ def sendSMS(message):
     sns_client = boto3.client('sns', 'us-west-2')
     mobileNumber = getContactDetails()
     response = sns_client.publish(PhoneNumber=mobileNumber, Message=message)
-    status_code = response["ResponseMetadata"]["HTTPStatusCode"]
-    if status_code == "200":
-        print "SMS successfully sent"
-    else:
-        print "There has been some problem sending SMS. Error code: " + status_code
