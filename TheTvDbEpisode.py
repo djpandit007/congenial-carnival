@@ -19,6 +19,17 @@ def getCredentials():
     except IOError:
         print "The file with API key not found!"
 
+def getContactDetails():
+    # Returns phone number as string
+    try:
+        contact = open("contact.txt", "r")
+        mobilePhone = contact.readline().strip()
+        assert len(mobilePhone) == 12, "Invalid API Key"
+        print mobilePhone
+        return mobilePhone
+    except IOError:
+        print "The file with contact details not found!"
+
 def isError(responseObj):
     # Returns True if there is an error, False otherwise
     if responseObj.ok and responseObj.status_code == 200:
