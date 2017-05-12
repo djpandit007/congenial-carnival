@@ -1,6 +1,7 @@
 import requests
 import json
 from pprint import pprint
+import boto3
 
 APIURL = "https://api.thetvdb.com"
 
@@ -104,3 +105,17 @@ def getSeriesName(seriesId):
     if isError(seriesName):
         return None
     return json.loads(seriesName.content)["data"]["seriesName"]
+
+def sendSMS(message):
+    """
+    Sends 'message' using the AWS SNS service through boto3 library
+    Does not return anything
+    """
+    sns_client = boto3.client('sns', 'us-west-2')
+    mobileNumber = getContactDetails()
+    response = sns_client.publish(PhoneNumber=mobileNumber, Message=message)
+    status_code = response["ResponseMetadata"]["HTTPStatusCode"]
+    if status_code == "200":
+        print "SMS successfully sent"
+    else:
+        print "There has been some problem sending SMS. Error code: " + status_code
