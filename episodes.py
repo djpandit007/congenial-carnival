@@ -31,7 +31,7 @@ if choice == "1":
         print "Summary: " + previousOverview
         print
         print later["text"]
-        if not latestOverview:
+        if latestOverview:
             print "Summary: " + str(latestOverview)
 
 elif choice == "2":
@@ -56,5 +56,5 @@ elif choice == "2":
     print "Summary: " + previousOverview
     print
     print later["text"]
-    if not latestOverview:
+    if latestOverview:
         print "Summary: " + str(latestOverview)
